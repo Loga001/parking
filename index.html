@@ -113,19 +113,22 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: white;
+            background: #e0e0e0;
+            color: #666;
             text-transform: uppercase;
             letter-spacing: 1px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin: 0 10px;
         }
         
-        .gate-btn.open {
+        .gate-btn.active.open {
             background: var(--gate-open);
+            color: white;
         }
         
-        .gate-btn.close {
+        .gate-btn.active.close {
             background: var(--gate-closed);
+            color: white;
         }
         
         .gate-status {
@@ -187,16 +190,15 @@
 
     <script>
         // Firebase configuration
-   const firebaseConfig = {
-  apiKey: "AIzaSyBTZJi2J0NMr6cQCiIU1kiZNC6bUhJ7gwM",
-  authDomain: "smartparkingesp32-6e893.firebaseapp.com",
-  databaseURL: "https://smartparkingesp32-6e893-default-rtdb.firebaseio.com",
-  projectId: "smartparkingesp32-6e893",
-  storageBucket: "smartparkingesp32-6e893.firebasestorage.app",
-  messagingSenderId: "117278002603",
-  appId: "1:117278002603:web:1caaa5be011d65673a16ee"
-};
-
+        const firebaseConfig = {
+            apiKey: "AIzaSyBTZJi2J0NMr6cQCiIU1kiZNC6bUhJ7gwM",
+            authDomain: "smartparkingesp32-6e893.firebaseapp.com",
+            databaseURL: "https://smartparkingesp32-6e893-default-rtdb.firebaseio.com",
+            projectId: "smartparkingesp32-6e893",
+            storageBucket: "smartparkingesp32-6e893.firebasestorage.app",
+            messagingSenderId: "117278002603",
+            appId: "1:117278002603:web:1caaa5be011d65673a16ee"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -230,7 +232,7 @@
             }
         }
 
-        // Updated: Update slot UI with if...else
+        // Update slot UI
         function updateSlot(slotId, isAvailable) {
             const slot = document.getElementById(slotId);
             const statusElement = document.getElementById(`${slotId}-status`);
@@ -240,11 +242,9 @@
                 slot.classList.add('occupied');
                 statusElement.textContent = 'Occupied';
             } else {
-
                 slot.classList.remove('occupied');
                 slot.classList.add('available');
                 statusElement.textContent = 'Available';
-                
             }
             updateTimestamp();
         }
@@ -256,14 +256,14 @@
                 gateStatus.textContent = "Gate: OPENED";
                 gateStatus.classList.add('open');
                 gateStatus.classList.remove('closed');
-                openGateBtn.disabled = true;
-                closeGateBtn.disabled = false;
+                openGateBtn.classList.add('active');
+                closeGateBtn.classList.remove('active');
             } else {
                 gateStatus.textContent = "Gate: CLOSED";
                 gateStatus.classList.add('closed');
                 gateStatus.classList.remove('open');
-                openGateBtn.disabled = false;
-                closeGateBtn.disabled = true;
+                closeGateBtn.classList.add('active');
+                openGateBtn.classList.remove('active');
             }
             updateTimestamp();
         }
